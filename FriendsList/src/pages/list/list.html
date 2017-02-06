@@ -1,0 +1,54 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Welcome</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="logout()">
+          <ion-icon name="exit"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+    <ion-refresher (ionRefresh)="getFriend($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+  <ion-fab bottom right>
+    <button ion-fab icon-only (click)="showAddDialog()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab bottom left>
+    <button ion-fab icon-only (click)="scanBluetooth()">
+      <ion-icon name="bluetooth"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let friend of friends">
+      <ion-item>
+        <ion-avatar>
+          <img src= "http://lorempixel.com/32/32" />
+        </ion-avatar>
+        <h2>{{friend.name}}</h2>
+        <h3>In Toolbox? {{friend.toolbox}}</h3>
+        <p>Tool Number {{friend.number}}</p>
+      </ion-item>
+
+    <ion-item-options side="right">
+      <button ion-button icon-only color="secondary" (click)="editFriend(friend)">
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button color="danger" ion-button icon-only (click)="deleteFriend(friend)">
+        <ion-icon name="Trash"></ion-icon>
+      </button>
+    </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>
