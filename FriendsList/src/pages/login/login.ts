@@ -14,8 +14,8 @@ import { Storage } from '@ionic/storage';
 export class LoginPage {
 
   user: User = {
-    username: "",
-    password: ""
+    username: "Bax",
+    password: "123"
   };
 
   url: string;
@@ -34,7 +34,7 @@ export class LoginPage {
   login(){
     if(!(this.user.username && this.user.password)){
       this.alertCtrl
-        .create({ title : "Error", message: "Check username or password. Please retry.", buttons: ['OK']})
+        .create({ title : "Error", message: "Check username or password. Please retry.", buttons: ['OK'] })
         .present();
       return;
     }

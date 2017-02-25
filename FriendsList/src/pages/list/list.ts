@@ -5,9 +5,9 @@ import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage'
 import { LoginPage } from '../login/login';
 import { BackgroundMode } from 'ionic-native';
+import { BLE } from 'ionic-native';
 
 BackgroundMode.enable();
-
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
@@ -18,30 +18,44 @@ export class ListPage {
   url: string;
   friends: any[];
   userId: string;
+  devices: any[];
+  isScanning: boolean
 
   constructor(public navCtrl: NavController,  public alertCtrl: AlertController, public http: Http, public localStorage:Storage) {
+    this.devices = [];
+    this.isScanning = false;
     this.headers = new Headers();
     this.headers.append("X-Parse-Application-ID", "AppId1",);
     this.headers.append("X-Parse-REST-API-Key", "restAPIKey",);
-
     this.localStorage.get('user').then((value) => {
       this.userId = value;
       this.getFriend(null);
+
     })
     
   
   }
 
 
-scanBluetooth(){
-  this.alertCtrl.create({
-    title: "SCANNING!",
-    message: "Pairing with device",
-    buttons:[{
-      text:'OK!'
-    }]})
-    .present()
-}
+  startScanning() {
+    this.devices = [];
+    BLE.startScan([]).subscribe(device => {
+    this.devices.push(device);
+    });
+
+  setTimeout(() => {
+    BLE.stopScan().then(() => {
+    console.log(JSON.stringify(this.devices))
+    this.isScanning = false;
+    });
+    }, 3000);
+
+  }
+
+  connectToDevice(device) {
+    console.log(JSON.stringify(device))
+   
+  }
 
   showAddDialog(){
     this.alertCtrl.create({
@@ -117,6 +131,8 @@ scanBluetooth(){
     })
 
   }
+
+
 
   editFriend(friend){
 
